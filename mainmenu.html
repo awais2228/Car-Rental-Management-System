@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main Menu</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: #f3f3f3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-image: url("Main_menu.jpg");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      .container {
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #d19b15;
+        padding: 50px 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        max-width: 600px;
+      }
+
+      .container h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+
+      .container p {
+        font-size: 18px;
+        margin-bottom: 40px;
+        color: #ffffff;
+      }
+
+      .container a {
+        display: inline-block;
+        background-color: #d19b15;
+        color: white;
+        font-size: 18px;
+        padding: 10px 25px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      .container a:hover {
+        background-color: white;
+        transform: scale(1.05);
+        color: #d19b15;
+      }
+
+      .Role_Buttons {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 15px;
+      }
+
+      .Role_Buttons input[type="button"] {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #d19b15;
+        color: white;
+        backdrop-filter: blur(15px);
+        border: 2px solid transparent;
+        border-radius: 5px;
+        transition: background-color 0.3s, transform 0.3s;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .Role_Buttons input[type="button"]:hover {
+        background-color: white;
+        color: #d19b15;
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome to 10 Rent a Car</h1>
+      <p>
+        We are proud to offer the best car rental service in the city. Whether
+        you need a car for a day or a month, we have a wide variety of vehicles
+        to suit your needs. Our reliable and affordable service ensures your
+        comfort and satisfaction.
+      </p>
+      <a href="usermenu2.html">Menu</a>
+    </div>
+
+    <script>
+      function redirectToAdminLogin() {
+        window.location.href = "adminlogin.html";
+      }
+    </script>
+
+    <div class="Role_Buttons">
+      <input
+        type="button"
+        name="admin"
+        value="Admin"
+        onclick="redirectToAdminLogin()"
+      />
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rent Car</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f3f3f3;
+        padding: 20px;
+        position: relative;
+        min-height: 100vh;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      body {
+        background-image: url("Rent_car.jpg");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+      a {
+        text-decoration: none;
+        color: #d19b15;
+      }
+      a:hover {
+        text-decoration: none;
+      }
+      .header {
+        font-size: 36px;
+        margin-bottom: 20px;
+        color: #d19b15;
+        text-align: center;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 8px;
+      }
+      th,
+      td {
+        padding: 12px;
+        border: 2px solid black;
+        color: #f3f3f3;
+      }
+      th {
+        background-color: #f4b400;
+        color: white;
+      }
+      tbody {
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+      .rent-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #d19b15;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .rent-btn:hover {
+        background-color: green;
+      }
+      .rent-btn:disabled {
+        background-color: #808080;
+        cursor: not-allowed;
+      }
+      .back-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #d19b15;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        border-radius: 5px;
+        text-decoration: none;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        transition: all 0.3s ease;
+      }
+      .back-btn:hover {
+        background-color: white;
+        color: green;
+        transform: scale(1.1);
+      }
+
+      .dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+        width: 300px;
+      }
+      .dialog input {
+        padding: 10px;
+        margin-top: 10px;
+        width: 100%;
+        font-size: 16px;
+      }
+      .dialog button {
+        padding: 10px 20px;
+        background-color: #d19b15;
+        color: white;
+        border: none;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+      .dialog button:hover {
+        background-color: green;
+      }
+      .dialog .close-btn {
+        background-color: #d19b15;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">Available Cars</div>
+    <table id="cars-table">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Model</th>
+          <th>Year</th>
+          <th>Price ($) / Day</th>
+          <th>Availability</th>
+          <th>Rent</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <a href="usermenu.html" class="back-btn">Back to Menu</a>
+
+    <div class="dialog" id="dialog">
+      <h3>How many days do you want to rent the car?</h3>
+      <input type="number" id="days" placeholder="Enter number of days" />
+      <button onclick="confirmDays()">Next</button>
+      <div id="confirmation-msg" style="display: none">
+        <p>
+          You are about to rent the car for <span id="rent-days"></span> day(s).
+          Please confirm.
+        </p>
+        <button onclick="confirmRent()">Confirm</button>
+        <button onclick="cancelRent()">Cancel</button>
+      </div>
+    </div>
+
+    <script>
+      function loadCars() {
+        const cars = JSON.parse(localStorage.getItem("cars")) || [];
+        const carsTableBody = document.querySelector("#cars-table tbody");
+        carsTableBody.innerHTML = "";
+
+        cars.forEach((car, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+      <td>${car.company}</td>
+      <td>${car.model}</td>
+      <td>${car.year}</td>
+      <td>$${car.price}</td>
+      <td>${car.isAvailable ? "Yes" : "No"}</td>
+      <td>
+        <button
+          class="rent-btn"
+          onclick="rentCar(${index})"
+          ${car.isAvailable ? "" : "disabled"}>
+          Rent
+        </button>
+      </td>
+    `;
+          carsTableBody.appendChild(row);
+        });
+      }
+
+      function rentCar(carIndex) {
+        const daysPrompt = prompt(
+          "Enter the number of days you want to rent the car:"
+        );
+        if (daysPrompt === null) {
+          return;
+        }
+
+        const days = Number(daysPrompt);
+        if (isNaN(days) || days <= 0) {
+          alert("Please enter a valid number of days.");
+          return;
+        }
+
+        const cars = JSON.parse(localStorage.getItem("cars")) || [];
+        const selectedCar = cars[carIndex];
+
+        if (!selectedCar.isAvailable) {
+          alert("Sorry, this car is already rented.");
+          return;
+        }
+
+        const totalCost = selectedCar.price * days;
+        selectedCar.isAvailable = false;
+        localStorage.setItem("cars", JSON.stringify(cars));
+
+        alert(`Car rented successfully! Total cost: $${totalCost}`);
+        window.location.href = "usermenu.html";
+      }
+
+      window.onload = loadCars;
+    </script>
+    <script src="main.js"></script>
+  </body>
+</html>

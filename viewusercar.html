@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>View Car</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f3f3f3;
+        padding: 20px;
+        position: relative;
+        min-height: 100vh;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      body {
+        background-image: url("View_Car.jpg");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+      a {
+        text-decoration: none;
+        color: #d19b15;
+      }
+      a:hover {
+        text-decoration: none;
+      }
+      .header {
+        font-size: 36px;
+        margin-bottom: 20px;
+        color: #d19b15;
+        text-align: center;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 8px;
+      }
+      th,
+      td {
+        padding: 12px;
+        border: 2px solid black;
+        color: #f3f3f3;
+      }
+      th {
+        background-color: #f4b400;
+        color: white;
+      }
+      tbody {
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+      tr.available {
+        background-color: rgba(0, 250, 58, 0.256);
+      }
+      tr.unavailable {
+        background-color: rgba(255, 0, 0, 0.265);
+      }
+      .back-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #d19b15;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        border-radius: 5px;
+        text-decoration: none;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        transition: all 0.3s ease;
+      }
+      .back-btn:hover {
+        background-color: white;
+        color: #d19b15;
+        transform: scale(1.1);
+      }
+      .add-btn {
+        display: inline-block;
+        padding: 8px 41px;
+        background-color: #d19b15;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        border-radius: 5px;
+        text-decoration: none;
+        position: absolute;
+        bottom: 75px;
+        right: 20px;
+        transition: all 0.3s ease;
+      }
+      .return-button {
+        display: inline-block;
+        background-color: #d19b15;
+        color: white;
+        font-size: 18px;
+        padding: 8px 25px;
+        border-color: transparent;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: 0.3s;
+        top: 20;
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        display: flex;
+        gap: 15px;
+      }
+
+      .return-button:hover {
+        background-color: white;
+        transform: scale(1.05);
+        color: #d19b15;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">Available Cars</div>
+    <table id="cars-table">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Model</th>
+          <th>Year</th>
+          <th>Price ($) / Day</th>
+          <th>Availability</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Cars will be added dynamically here -->
+      </tbody>
+    </table>
+
+    <a href="usermenu.html" class="back-btn">Back to Menu</a>
+    <button class="return-button" onclick="window.location.href='rentcar.html'">
+      Rent Car</button
+    >|
+    <!-- <a href="addcar.html" class="add-btn">Add Car</a> -->
+    <script>
+      function loadCars() {
+        var cars = localStorage.getItem("cars");
+        console.log("Raw cars data:", cars);
+
+        cars = cars ? JSON.parse(cars) : [];
+        console.log("Parsed cars:", cars);
+
+        var availableCars = cars.filter((car) => car.isAvailable === true);
+        console.log("Available cars:", availableCars);
+
+        var tableBody = document
+          .getElementById("cars-table")
+          .querySelector("tbody");
+        tableBody.innerHTML = "";
+
+        if (availableCars.length === 0) {
+          tableBody.innerHTML =
+            '<tr><td colspan="5">No cars available for rent.</td></tr>';
+          return;
+        }
+
+        availableCars.forEach(function (car) {
+          var row = document.createElement("tr");
+          row.style.backgroundColor = "rgba(0, 250, 58, 0.256)";
+          row.innerHTML = `
+      <td>${car.company}</td>
+      <td>${car.model}</td>
+      <td>${car.year}</td>
+      <td>${car.price}</td>
+      <td>Yes</td>
+    `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      window.onload = loadCars;
+    </script>
+    <script src="main.js"></script>
+  </body>
+</html>
